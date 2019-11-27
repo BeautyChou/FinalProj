@@ -10,7 +10,6 @@
     import Comment from '../subconponents/comment.vue'
     import {Toast} from 'mint-ui'
     import Bus from './bus.js'
-    import { Indicator } from 'mint-ui';
     export default {
         name: "newsinfo",
         data(){
@@ -21,13 +20,6 @@
                 varurl:this.$route.params.URL,
             }
         },
-        created(){
-            Indicator.open('加载中...');
-            setTimeout(()=>{
-                Indicator.close()
-            },5000)
-
-        },
         mounted(){
             var vm = this;
             Bus.$on('val',(data)=>{
@@ -37,10 +29,6 @@
 
             });
 
-        },
-        beforeRouteLeave(to,from,next){
-            Indicator.close();
-            next();
         },
         methods:{
             getUrl(){
