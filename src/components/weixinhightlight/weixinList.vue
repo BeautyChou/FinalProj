@@ -186,6 +186,7 @@
                 //         "url":"https:\/\/mp.weixin.qq.com\/s?__biz=MzA3MTAwNTI2Ng==&mid=2675743116&idx=2&sn=b742f03bb401beb738bc7d35123b0cd3&chksm=85bc1cb1b2cb95a75e3ce9d30f217c20e70fb1c92b7c402245cf918453e4e2dc6e80d8df2454"
                 //     }
                 // ],
+                index:1,
             }
         },
         created(){
@@ -196,6 +197,7 @@
         },
         methods: {
             getweixinList( category ) {
+                console.log(this.index);
                 this.$http.get('/api/weixin/query?pno='+this.index+'&ps=&dtype=&key=c2cb0cd62e134e794a8b17ed99d997c3').then(result => {
                     if (result.body.error_code === 0) {
                         this.weixinList=this.weixinList.concat(result.body.result.list)
