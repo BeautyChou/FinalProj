@@ -22,6 +22,7 @@
 </template>
 
 <script>
+    import { Toast } from 'mint-ui'
     export default {
         name: "comment",
         data(){
@@ -36,6 +37,14 @@
         },
         methods:{
             Submit(){
+                if(this.COMMENT===""){
+                    Toast({
+                        message:'评论内容不能为空！',
+                        position:'middle',
+                        duration:'3000'
+                    })
+                    return;
+                }
                 var newComment={id:this.commentList.length+1,username:'匿名用户',date:new Date(),content:this.COMMENT};
                 this.commentList.push(newComment);
                 this.COMMENT="";

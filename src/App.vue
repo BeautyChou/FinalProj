@@ -51,7 +51,6 @@
             this.flag=this.$route.path==='/home'?false:true;
         },
         mounted() {
-            this.welcome();
             this.ready();
             this.getprovince();
             this.switchflag()
@@ -93,9 +92,6 @@
                     this.flagshow=!this.flagshow;
                 },3000)
             },
-            welcome(){
-                In
-            }
         },
         watch:{
             '$route.path':function (newval) {
