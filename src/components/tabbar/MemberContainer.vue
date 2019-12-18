@@ -46,50 +46,38 @@
     import { MessageBox } from 'mint-ui';
     export default {
         name: "MemberContainer",
-        data(){
+        data() {
             return {
-                username:"",
-                Password:"",
-                value:false
+                username: "",
+                Password: "",
+                value: false
             }
         },
         mounted() {
 
         },
-        beforeRouteLeave(to,from,next){
-            console.log(this.Password.length);
-            if (to.path==="/member/users/") {
+        beforeRouteLeave(to, from, next) {
+            if (to.path === "/member/users/" + this.username) {
                 if (!(this.Password.length)) {
                     MessageBox({
                         title: '错误',
                         message: '未填写密码！',
                         showCancelButton: false
                     });
+                    console.log("mima");
                     next(false)
-                }
-            }
-                else if (to.path==="/member/users/") {
-                    if (!(this.Password.length)) {
-                        MessageBox({
-                            title: '错误',
-                            message: '未填写密码！',
-                            showCancelButton: false
-                        });
-                        next(false)
-                    }
-                else if (this.username.length === 0) {
+                } else if (!(this.username.length)){
                     MessageBox({
                         title: '错误',
-                        message: '未填写用户名！',
+                        message: '未填写用户名!',
                         showCancelButton: false
-                    });
-                    next(false)
+                    })
                 }
                 else {
                     next()
                 }
             }
-            else{
+            else {
                 next()
             }
         }

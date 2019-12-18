@@ -2,36 +2,16 @@
     <div class="comment-container" style="padding-bottom: 52px">
         <h3>发表评论</h3>
         <hr>
-        <textarea name="" id="" cols="30" rows="10" placeholder="请输入要输入的内容" maxlength="120"></textarea>
-        <mt-button type="primary" size="large">发表评论</mt-button>
+        <textarea name="" id="" cols="30" rows="10" placeholder="请输入要输入的内容" maxlength="120" v-model="COMMENT"></textarea>
+        <mt-button type="primary" size="large" @click="Submit">发表评论</mt-button>
 
-        <div class="cmt-list">
+        <div class="cmt-list" v-for="item in commentList">
             <div class="cmt-item">
                 <div class="cmt-title">
-                    第一楼　用户：匿名用户　发表时间：2099-99-99 13:13:13
+                    第{{item.id}}楼　用户：{{item.username}}　发表时间：{{item.date|dateFormat}}
                 </div>
                 <div class="cmt-body">
-                    sd4as54d456sd456as465
-                </div>
-            </div>
-        </div>
-        <div class="cmt-list">
-            <div class="cmt-item">
-                <div class="cmt-title">
-                    第二楼　用户：匿名用户　发表时间：2099-99-99 13:13:13
-                </div>
-                <div class="cmt-body">
-                    sd4as54d456sd456as465
-                </div>
-            </div>
-        </div>
-        <div class="cmt-list">
-            <div class="cmt-item">
-                <div class="cmt-title">
-                    第三楼　用户：匿名用户　发表时间：2099-99-99 13:13:13
-                </div>
-                <div class="cmt-body">
-                    sd4as54d456sd456as465
+                    {{item.content}}
                 </div>
             </div>
         </div>
@@ -44,6 +24,23 @@
 <script>
     export default {
         name: "comment",
+        data(){
+            return {
+                commentList:[
+                    {id:'1',username:'匿名用户',date:new Date(),content:'哈哈哈哈哈哈'},
+                    {id:'2',username:'匿名用户',date:new Date(),content:'文章写得好'},
+                    {id:'3',username:'匿名用户',date:new Date(),content:'小编厉害！'}
+                ],
+                COMMENT:"",
+            }
+        },
+        methods:{
+            Submit(){
+                var newComment={id:this.commentList.length+1,username:'匿名用户',date:new Date(),content:this.COMMENT};
+                this.commentList.push(newComment);
+                this.COMMENT="";
+            }
+        }
     }
 </script>
 

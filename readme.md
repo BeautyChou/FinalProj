@@ -2,7 +2,8 @@
 ```
 就是个Vue+axios  UI用的是Mint-UI以及mui 有一说一蛮水的
 ```
-##遇到的几个问题以及解决的办法
+## 遇到的几个问题以及解决的办法
+
 + 获取新闻的数据
    + 新闻、微信的API是聚合数据的
   ```
@@ -39,6 +40,13 @@
                       '^/iimmgg': '/'
                   }
               }
+              '/provinces':{
+                   target:'http://apis.juhe.cn/',
+                   changeOrigin:true,
+                   pathRewrite:{
+                       '^/provinces':'/'
+                   }
+               },
           },
   ```
    + 用Vue-cli建立的据说是创建一个index.js在里面设置代理，我也没试过不知道嗷。
@@ -46,28 +54,39 @@
 + 在登录界面判断用户自己是否输入了用户名与密码
    + 通过Vue的“路由守卫”在即将离开页面时判断是否输入了密码与用户名，若是没有的话则终止当前的路由
    ```javascript
-   beforeRouteLeave(to,from,next){   //这是放在了一个单独的Vue组件中，只希望对这个组件进行路由的守卫
-               if (to.path==="/<-----上一步/下一步----->/") {  //涉及到了返回与下一步所以这里需要限制一下
-                   if (this.username === '') {
-                       alert('未填写用户名！');
-                       next(false) //终止当前的路由
-                   } else if (this.Password === '') {
-                       alert('未填写密码！');
+    beforeRouteLeave(to, from, next) {
+               if (to.path === "/member/users/" + this.username) {
+                   if (!(this.Password.length)) {
+                       MessageBox({
+                           title: '错误',
+                           message: '未填写密码！',
+                           showCancelButton: false
+                       });
+                       console.log("mima");
                        next(false)
-                   } else {
+                   } else if (!(this.username.length)){
+                       MessageBox({
+                           title: '错误',
+                           message: '未填写用户名!',
+                           showCancelButton: false
+                       })
+                   }
+                   else {
                        next()
                    }
                }
-               else{
+               else {
                    next()
                }
            }
+       }
    ```
----  
+---
 + 在新闻列表中的mui中设置了slider但是初次打开不能实现拖动，必须要刷新一次才行
    + 得在那个组件的mounted的钩子函数初始化slider
----   
+---
 + 在进入详细的新闻页面时不能使用详细的新闻页面的url作为路由参数否则无法打开
+   
    + 将新闻详细的uniquekey作为url参数传递
 + 追问：（兄弟路由之间传值）但是这样就获取不到新闻详情的url了，就算是用了一个组件来专门传递url但是还是会产生错位的问题，即：
    ```javascript
@@ -97,10 +116,10 @@
         console.log(data);
         this.varurl=data;
     });
-    ```
+     ```
 ---
 + 微信和新闻的页面获取与显示
-  + 通过Ajax在http://cors-anywhere.herokuapp.com/这个神奇的API可以不受iframe的跨域限制获取到微信、新闻的H5内容，然后通过v-html就直接渲染成为网页了。
+  + 通过Ajax在http://cors-anywhere.herokuapp.com/这个神奇的API可以不受iframe的跨域限制获取到微信、新闻的H5内容（似乎就是破解了防盗链），然后通过v-html就直接渲染成为网页了。
   ```javascript
   getUrl(){
       let http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
@@ -128,8 +147,34 @@
     <meta name="referrer" content="never">
   ```
 ---
++ 如何获取用户IP、省份、天气
+  + 获取天气通过IP获取省份的API也是是聚合数据的
+  + IP地址获取是通过搜狐的一个API实现的
+    + 首先在index.html中引入脚本
+    ```html
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+     ```
+    + 然后在想要获取IP的组件中写方法
+    ```javascript
+    mounted() {
+                this.welcome();
+                this.ready();
+                this.getprovince();
+                this.switchflag()
+            },
+    methods:{
+        ready(){
+            var cip=returnCitySN["cip"];
+            this.ip=cip;
+            // console.log(this.ip);
+        },
+    }
+    ```
+  + 
+---
 ##尚未解决的几个问题（TODO）
++ 这个项目截至到2019/12/18还只有页面，没有后台管理~~(虽然只是为了交WEB的期末作业而已诶嘿)~~
 + 莫得数据库那些什么用户名、密码都不能验证是否正确，只能眼睁睁的看着他们乱输入o(╥﹏╥)o
-+ 那个新闻的api找的网站没有评论区获取不了评论，所以那个评论只是假数据
-+ 最后一个问题那里是一个他人的代理，虽然在github上面也有那个项目，但是终究是别人的，总是有点不放心，还是得想办法自己搞一个
++ 那个新闻的api找的网站没有评论区获取不了评论，所以那个评论只是假数据(截至到2019/12/18能提交假数据上去了，与后台莫得一丢丢关系所以下次打开页面也就莫得了)
++ 防盗链问题的那个神秘链接是一个他人的代理，虽然在github上面也有那个项目，但是终究是别人的，总是有点不放心，还是得想办法自己搞一个
 + ~~没有钱~~

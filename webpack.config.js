@@ -40,13 +40,13 @@ module.exports = {
                     '^/iimmgg': '/'
                 }
             },
-            // '/hhttmmll' : {
-            //     target: 'http://cors-anywhere.herokuapp.com/', // 目标服务器地址
-            //     changeOrigin: true, // 是否修改来源, 为true时会让目标服务器以为是webpack-dev-server发出的请求!
-            //     pathRewrite: {
-            //         '^/hhttmmll': '/'
-            //     }
-            // }
+            '/provinces':{
+                target:'http://apis.juhe.cn/',
+                changeOrigin:true,
+                pathRewrite:{
+                    '^/provinces':'/'
+                }
+            },
         },
     },
     module: { //配置所有第三方loader模块的
@@ -66,15 +66,4 @@ module.exports = {
             // 'vue$':'vue/dist/vue.js'
         }
     },
-    // proxyTable: {
-    //     '/api': {
-    //         // target:'http://jsonplaceholder.typicode.com',
-    //         target: 'http://localhost:9080',
-    //         changeOrigin: true,
-    //
-    //         pathRewrite: {
-    //             '/api': ''
-    //         }
-    //     }
-    // },
 }

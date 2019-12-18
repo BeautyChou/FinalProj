@@ -1,6 +1,5 @@
 <template>
     <div class="newsinfo-contianer" >
-<!--        <h3>新闻标题啊啊啊啊啊啊&#45;&#45;&#45;&#45;&#45;&#45;{{varurl}}</h3>-->
         <div v-html="newsinfo" class="newsinfo"></div>
         <comment-box></comment-box>
     </div>
@@ -8,7 +7,7 @@
 
 <script>
     import Comment from '../subconponents/comment.vue'
-    import {Toast} from 'mint-ui'
+    import {Indicator, Toast} from 'mint-ui'
     import Bus from './bus.js'
     export default {
         name: "newsinfo",
@@ -23,31 +22,29 @@
         mounted(){
             var vm = this;
             Bus.$on('val',(data)=>{
-                console.log(data);
                 this.varurl=data;
                 this.getUrl();
-
+                this.getUrl();
             });
 
         },
         methods:{
             getUrl(){
+                Indicator.open('加载中...');
                 let http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
                 let realurl = http + '//cors-anywhere.herokuapp.com/' + this.varurl;
                 this.$axios.get(realurl).then((response)=>{
                     console.log(response)
-                    // let html = response.data;
                     response.data = response.data.replace(/data-src/g, "src")
                         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, '')
                         .replace(/https/g,'http');
                     this.newsinfo = response.data
                     let html_src = 'data:text/html;charset=utf-8,' + response.data;
                     let iframe = document.getElementById('iFrame');
-                    console.log(html_src)
+                    setTimeout(()=>{
+                        Indicator.close();
+                    },1000)
                     iframe.src = html_src;
-                    // var iframe = document.createElement('iframe');
-                    // iframe.src=html_src;
-                    // document.body.appendChild(iframe);
                 },(err)=>{console.log(err);});
             },
         },

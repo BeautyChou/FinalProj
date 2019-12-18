@@ -20,10 +20,6 @@
             }
         },
         created(){
-            Indicator.open('加载中...');
-            setTimeout(()=>{
-                Indicator.close()
-            },5000)
             var vm = this;
             Bus.$on('val',(data)=>{
                 console.log(data);
@@ -36,6 +32,7 @@
         },
         methods: {
             getUrl(){
+                Indicator.open('加载中...');
                 let http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
                 let realurl = http + '//cors-anywhere.herokuapp.com/' + this.varurl;
                 this.$axios.get(realurl).then((response)=>{
@@ -43,7 +40,11 @@
                         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, '')
                         .replace(/https/g,'http');
                     this.newsinfo = response.data;
+                    setTimeout(()=>{
+                        Indicator.close();
+                    },1000)
                 },(err)=>{console.log(err);});
+
             },
             setsize() {
                 const oIframe = document.getElementById('iFrame');
